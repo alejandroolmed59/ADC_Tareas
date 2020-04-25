@@ -55,6 +55,7 @@ bucle1:	inc bx
 		mov [bx+210h], ax
 		cmp ax, 0Xff ; Si ya estuvieron las 11 veces
 		jb bucle1
+		inc bx
 bucle2: inc bx
 		inc bx
 		mul cx
