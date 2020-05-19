@@ -35,7 +35,7 @@ kbwait: mov 	ax, 0000h
 
 m_cursr:mov 	ah, 02h
 	mov 	dx, di  ; columna
-    add     dx, 30d
+    add     dx, ax
 	mov 	dh, bh ; fila
 	mov 	bh, 0h
 	int 	10h
@@ -43,7 +43,8 @@ m_cursr:mov 	ah, 02h
 
 phrase:	mov 	di, 0d
 lupi:	mov 	cl, [msg+di]
-    mov 	bh, 13d ; fila
+    mov 	bh, 9d ; fila
+    mov     ax, 10d; columna
 	call    m_cursr
 	call 	w_char
 	inc	di
@@ -52,17 +53,34 @@ lupi:	mov 	cl, [msg+di]
     
     mov 	di, 0d
 lupi2:	mov 	cl, [msg2+di]
-        mov 	bh, 17d ; fila
+        mov 	bh, 13d ; fila
+        mov     ax, 40d; columna
         call    m_cursr
         call 	w_char
         inc	di
         cmp 	di, len2
         jb	lupi2
+        
+        mov di, 0d
+lupi3:	mov 	cl, [msg3+di]
+        mov 	bh, 19d ; fila
+        mov     ax, 25d; columna
+        call    m_cursr
+        call 	w_char
+        inc	di
+        cmp 	di, len3
+        jb	lupi3
         ret
 
 
-section .data
+section .data1
 msg	db 	"Sometimes  "
-msg2	db 	"I dream about cheese "
 len 	equ	$-msg
+
+section .data2
+msg2	db 	"I dream "
 len2 	equ	$-msg2
+
+section .data3
+msg3	db 	"About cheese "
+len3 	equ	$-msg3
