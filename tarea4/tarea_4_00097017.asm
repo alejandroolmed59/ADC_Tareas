@@ -2,15 +2,15 @@ org 	100h
 
 section .text
 
-	mov 	dx, msg
-	call 	w_strng
+	mov 	dx, msg ;Escribiendo mensaje inicial
+	call 	w_strng ;Llamando a teclado
 
 
-reset:	xor 	si, si 	;lo mimso que: mov si, 0000h
+reset:	xor 	si, si 	;Mi contador
 lupi:	call 	kb
 	mov	[300h+si], al ; CS:0300h en adelante
     sub al, 30h  ;Corrigo para tener el hex a decimal
-	mov [210h+si], al
+	mov [210h+si], al ;Voy a almacenar mis numeros en las direcciones 210h+contador
     cmp 	si, 04h
 	je	res ;LA condicion de paro sera cuando si sea 4[0-4]=5(longitud del carnet)
 	inc 	si
@@ -24,9 +24,8 @@ mostrar:mov 	dx, nl
 	call 	kb	; solo detenemos la ejecución
 	int 	20h
 
-texto:	 mov 	ah, 0h
+texto:	 mov 	ah, 0h ;Activanding modo texto
 	int 	16h
-	ret
 	ret
 
 kb: 	mov	ah, 1h
@@ -36,16 +35,6 @@ kb: 	mov	ah, 1h
 w_strng:mov	ah, 09h
 	int 	21h
 	ret
-
-
-;comparar: xor si,si
-;compararaux:  mov bl, [200h+si]
-;	cmp bl, [210h+si]
-;	jne lupi
-;	inc si
-;	cmp si, 05h
-;	je mostrarbienvenido
-;	jmp compararaux
 
 mostrarmsg:
     mov ah,09h
@@ -61,9 +50,11 @@ res:mov ax, [210h] ; Primer numero uso ax para que sea mi dividendo
     mov bl, 5d ; Sera mi divisor
     div bl
     mov [220h], al
-
-    mov dx, msg1
-    cmp al, 01h
+    
+    mov dx, destino ;A seal of the fate....
+    call mostrarmsg 
+    mov dx, msg1 
+    cmp al, 01h ;Comparaciones de cada posible resultado
     je mostrarmsg
     mov dx, msg2
     cmp al, 02h
@@ -93,12 +84,14 @@ res:mov ax, [210h] ; Primer numero uso ax para que sea mi dividendo
     cmp al, 0Ah
     je mostrarmsg
     
-   
-
 
 section .data
 msg 	db 	"Ingresa tu carnet: $"
 nl	db 	0xA, 0xD, "$"
+
+section .data
+destino 	db 	" Tu destino es: $"
+nldes	db 	0xA, 0xD, "$"
 
 section .data
 msg1 	db 	" Solo necesito el 0 $"
