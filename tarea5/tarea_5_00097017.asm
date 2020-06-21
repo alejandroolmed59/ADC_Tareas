@@ -39,8 +39,46 @@ vertical2: mov cx,50d
             inc di
             cmp di,50d
             jne vertical2
-            call fin
 
+;COMIENZO DE DOBLE LINEA
+    mov di,0h
+horizontal3: mov cx,50d
+            add cx, di
+            mov dx, 125d
+            call pixel
+            inc di
+            cmp di, 15d
+            jne horizontal3
+            
+            
+            mov di, 0h
+vertical3: mov cx,65d ;Columna
+            mov dx, 125d
+            add dx, di
+            call pixel
+            inc di
+            cmp di,35d
+            jne vertical3
+        
+        mov di,0h
+horizontal4: mov cx,65d
+            add cx, di
+            mov dx, 160d
+            call pixel
+            inc di
+            cmp di, 45d
+            jne horizontal4
+
+            mov di, 0h
+vertical4: mov cx,110d ;Columna
+            mov dx, 50d ;QUIERO LLEGAR HASTA LA 145d
+            add dx, di
+            call pixel
+            inc di
+            cmp di,111d
+            jne vertical4
+            call fin
+        
 
 
 fin:   call 	kb	 ; Utilizamos espera de alguna tecla
